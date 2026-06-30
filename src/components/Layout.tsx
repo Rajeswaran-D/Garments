@@ -96,14 +96,12 @@ export default function Layout() {
           }}>
 
             {/* Logo */}
-            <Link to="/" style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: '1.375rem', fontWeight: 700,
-              color: 'var(--color-primary-green)',
-              textDecoration: 'none', flexShrink: 0,
-              letterSpacing: '0.02em',
-            }}>
-              {businessName}
+            <Link to="/" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+              <img
+                src="/logo.png"
+                alt="Shona Garments"
+                style={{ height: '44px', width: 'auto', objectFit: 'contain' }}
+              />
             </Link>
 
             {/* Desktop Nav */}
@@ -270,11 +268,13 @@ export default function Layout() {
           borderBottom: '1px solid var(--color-border-light)',
           flexShrink: 0,
         }}>
-          <span style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: '1.125rem', fontWeight: 700,
-            color: 'var(--color-primary-green)',
-          }}>{businessName}</span>
+          <Link to="/" onClick={closeMobile} style={{ flexShrink: 0, display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+            <img
+              src="/logo.png"
+              alt="Shona Garments"
+              style={{ height: '36px', width: 'auto', objectFit: 'contain' }}
+            />
+          </Link>
           <button
             onClick={closeMobile}
             style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.375rem', borderRadius: '8px', color: 'var(--color-text-secondary)' }}
@@ -366,13 +366,13 @@ export default function Layout() {
 
             {/* Brand */}
             <div>
-              <Link to="/" style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: '1.375rem', fontWeight: 700,
-                color: 'var(--color-primary-green)',
-                textDecoration: 'none', display: 'block',
-                marginBottom: '1rem',
-              }}>{businessName}</Link>
+              <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', marginBottom: '1rem' }}>
+                <img
+                  src="/logo.png"
+                  alt="Shona Garments"
+                  style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
+                />
+              </Link>
               <p style={{
                 fontSize: '0.875rem', color: 'var(--color-text-secondary)',
                 lineHeight: 1.75, marginBottom: '1.5rem',
