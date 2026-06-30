@@ -1,10 +1,5 @@
 export default function About() {
-  const values = [
-    { emoji: '⭐', label: 'Quality', desc: 'Uncompromising standards in every product' },
-    { emoji: '💚', label: 'Comfort', desc: 'Designed for effortless, all-day wear' },
-    { emoji: '🤝', label: 'Trust', desc: 'Transparent, honest business practices' },
-    { emoji: '♻️', label: 'Sustainability', desc: 'Responsible sourcing & production' },
-  ];
+
 
   return (
     <div style={{ background: '#fff', minHeight: '100vh' }}>
@@ -81,30 +76,6 @@ export default function About() {
                   </div>
                 </div>
 
-                {/* Mini stats */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                  {[
-                    { value: '10+', label: 'Years Experience' },
-                    { value: '10K+', label: 'Happy Customers' },
-                    { value: '500+', label: 'Product Variants' },
-                    { value: '100%', label: 'Quality Assured' },
-                  ].map(({ value, label }) => (
-                    <div key={label} style={{
-                      background: 'var(--color-bg-soft)',
-                      borderRadius: '14px',
-                      padding: '1.25rem',
-                      border: '1px solid var(--color-border-light)',
-                      textAlign: 'center',
-                    }}>
-                      <p style={{
-                        fontFamily: "'Playfair Display', serif",
-                        fontSize: '1.625rem', fontWeight: 700,
-                        color: 'var(--color-primary-green)', lineHeight: 1, marginBottom: '0.25rem',
-                      }}>{value}</p>
-                      <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: 0 }}>{label}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               {/* Right: Content */}
@@ -158,30 +129,22 @@ export default function About() {
                   </p>
                 </div>
 
-                {/* Values */}
-                <div>
+                {/* Commitment to Quality */}
+                <div style={{
+                  marginBottom: '2.5rem',
+                  padding: '1.75rem',
+                  background: 'var(--color-bg-soft)',
+                  borderRadius: '16px',
+                  borderLeft: '4px solid var(--color-primary-green)',
+                }}>
                   <h2 style={{
                     fontFamily: "'Playfair Display', serif",
                     fontSize: '1.125rem', fontWeight: 700,
-                    color: 'var(--color-text-primary)', marginBottom: '1.25rem',
-                  }}>Our Values</h2>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                    {values.map(({ emoji, label, desc }) => (
-                      <div key={label} style={{
-                        background: '#fff',
-                        borderRadius: '14px',
-                        padding: '1.25rem',
-                        border: '1px solid var(--color-border-light)',
-                        display: 'flex', alignItems: 'flex-start', gap: '0.875rem',
-                      }}>
-                        <span style={{ fontSize: '1.25rem', flexShrink: 0, marginTop: '0.1rem' }}>{emoji}</span>
-                        <div>
-                          <p style={{ fontSize: '0.825rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '0.2rem' }}>{label}</p>
-                          <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, marginBottom: 0 }}>{desc}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                    color: 'var(--color-text-primary)', marginBottom: '0.75rem',
+                  }}>Commitment to Quality</h2>
+                  <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.8, marginBottom: 0 }}>
+                    Every garment reflects our dedication to premium craftsmanship. We use only carefully sourced materials tailored to last.
+                  </p>
                 </div>
               </div>
             </div>

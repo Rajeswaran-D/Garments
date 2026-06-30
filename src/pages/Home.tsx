@@ -2,16 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
+import { ShieldCheck, Scissors, Sparkles, Package, DollarSign, Truck, HeadphonesIcon } from 'lucide-react';
 
-
-function StatBadge({ value, label }: { value: string; label: string }) {
-  return (
-    <div style={{ textAlign: 'center' }}>
-      <p style={{ fontSize: '2rem', fontWeight: 700, fontFamily: "'Playfair Display', serif", color: 'var(--color-primary-green)', lineHeight: 1 }}>{value}</p>
-      <p style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginTop: '0.25rem', marginBottom: 0 }}>{label}</p>
-    </div>
-  );
-}
 
 export default function Home() {
   const [settings, setSettings] = useState<any>(null);
@@ -53,24 +45,6 @@ export default function Home() {
         }} />
 
         <div className="container-site" style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '6rem 1.25rem' }}>
-          {/* Overline badge */}
-          <span style={{
-            display: 'inline-block',
-            background: 'rgba(255,255,255,0.12)',
-            backdropFilter: 'blur(8px)',
-            color: '#fff',
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            padding: '0.4rem 1.25rem',
-            borderRadius: '999px',
-            border: '1px solid rgba(255,255,255,0.2)',
-            marginBottom: '1.75rem',
-          }}>
-            New Collection 2024
-          </span>
-
           {/* Main heading */}
           <h1 style={{
             fontFamily: "'Playfair Display', serif",
@@ -123,18 +97,6 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Stats Row */}
-          <div style={{
-            display: 'flex', flexWrap: 'wrap', gap: '2.5rem',
-            justifyContent: 'center', marginTop: '4rem',
-            paddingTop: '3rem',
-            borderTop: '1px solid rgba(255,255,255,0.12)',
-          }}>
-            <StatBadge value="500+" label="Products" />
-            <StatBadge value="10K+" label="Happy Customers" />
-            <StatBadge value="100%" label="Quality Assured" />
-            <StatBadge value="5★" label="Rated" />
-          </div>
         </div>
       </section>
 
@@ -223,27 +185,27 @@ export default function Home() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
               {[
                 {
-                  icon: '✨',
+                  icon: <Sparkles size={24} strokeWidth={1.5} color="var(--color-text-primary)" />,
                   title: 'Premium Fabrics',
-                  desc: 'Carefully sourced materials chosen for breathability, softness, and lasting colour retention.',
+                  desc: 'Sourced materials chosen for breathability, softness, and lasting colour retention.',
                 },
                 {
-                  icon: '🧵',
+                  icon: <Scissors size={24} strokeWidth={1.5} color="var(--color-text-primary)" />,
                   title: 'Precision Stitching',
-                  desc: 'Every stitch is crafted with exact attention to detail ensuring durability and a flawless finish.',
+                  desc: 'Every stitch is crafted with exact attention to detail ensuring durability.',
                 },
                 {
-                  icon: '👌',
+                  icon: <ShieldCheck size={24} strokeWidth={1.5} color="var(--color-text-primary)" />,
                   title: 'Comfort & Durability',
-                  desc: 'Designed for natural movement and maximum comfort through all seasons and daily wear.',
+                  desc: 'Designed for natural movement and maximum comfort through all seasons.',
                 },
               ].map(({ icon, title, desc }) => (
                 <div key={title} className="feature-card">
-                  <div className="feature-card-icon">
-                    <span style={{ fontSize: '1.5rem' }}>{icon}</span>
+                  <div className="feature-card-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
+                    {icon}
                   </div>
-                  <h3 className="heading-card">{title}</h3>
-                  <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.7, marginBottom: 0 }}>{desc}</p>
+                  <h3 className="heading-card" style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '0.5rem' }}>{title}</h3>
+                  <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: 0 }}>{desc}</p>
                 </div>
               ))}
             </div>
@@ -348,16 +310,16 @@ export default function Home() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               {[
-                { icon: '📦', label: 'Flexible MOQ', value: 'Custom quantities tailored to your needs' },
-                { icon: '💸', label: 'Wholesale Pricing', value: 'Competitive rates for retail partners' },
-                { icon: '🚚', label: 'Fast Dispatch', value: 'Reliable, on-time bulk shipments' },
-                { icon: '🎧', label: '24/7 Support', value: 'Dedicated team for bulk customers' },
+                { icon: <Package size={20} strokeWidth={1.5} />, label: 'Flexible MOQ', value: 'Custom quantities tailored to your needs' },
+                { icon: <DollarSign size={20} strokeWidth={1.5} />, label: 'Wholesale Pricing', value: 'Competitive rates for retail partners' },
+                { icon: <Truck size={20} strokeWidth={1.5} />, label: 'Fast Dispatch', value: 'Reliable, on-time bulk shipments' },
+                { icon: <HeadphonesIcon size={20} strokeWidth={1.5} />, label: '24/7 Support', value: 'Dedicated team for bulk customers' },
               ].map(({ icon, label, value }) => (
                 <div key={label} style={{
                   background: '#fff', borderRadius: '16px',
                   padding: '1.5rem', border: '1px solid var(--color-border-light)',
                 }}>
-                  <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.75rem' }}>{icon}</span>
+                  <div style={{ color: 'var(--color-text-primary)', marginBottom: '0.75rem' }}>{icon}</div>
                   <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '0.25rem' }}>{label}</p>
                   <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, marginBottom: 0 }}>{value}</p>
                 </div>
