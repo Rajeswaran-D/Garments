@@ -722,3 +722,19 @@ p:last-child {
 @media (min-width: 768px) {
   .hide-desktop { display: none !important; }
 }
+
+/* ============================================
+   SUPPRESS GHOST / WATERMARK TEXT ON CARDS
+   ============================================ */
+a[href*="category=Men"] *::before,
+a[href*="category=Men"] *::after,
+a[href*="category=Women"] *::before,
+a[href*="category=Women"] *::after,
+a[href*="category=Men"]::before,
+a[href*="category=Men"]::after,
+a[href*="category=Women"]::before,
+a[href*="category=Women"]::after {
+  display: none !important;
+  content: none !important;
+  opacity: 0 !important;
+}

@@ -23,80 +23,88 @@ export default function Home() {
       {/* ─── HERO ──────────────────────────────────────────────────────── */}
       <section style={{
         position: 'relative',
-        minHeight: '92vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: '100%',
+        height: '90vh',
         overflow: 'hidden',
-        background: 'linear-gradient(135deg, #0A3D1F 0%, #166534 45%, #15803D 100%)',
       }}>
-        {/* Decorative circles */}
+        {/* Background image fills the section */}
+        <img
+          src="/hero_banner.jpg"
+          alt="Shona Garments Hero Banner"
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover', objectPosition: 'center top',
+            zIndex: 0,
+          }}
+        />
+        {/* Gradient only at the bottom for text readability */}
         <div style={{
-          position: 'absolute', top: '-20%', right: '-10%',
-          width: '650px', height: '650px',
-          background: 'rgba(34,197,94,0.08)', borderRadius: '50%',
-          filter: 'blur(40px)', pointerEvents: 'none',
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 35%, transparent 65%)',
+          zIndex: 1,
         }} />
+        {/* Text pinned to bottom-left only */}
         <div style={{
-          position: 'absolute', bottom: '-15%', left: '-8%',
-          width: '500px', height: '500px',
-          background: 'rgba(22,101,52,0.3)', borderRadius: '50%',
-          filter: 'blur(60px)', pointerEvents: 'none',
-        }} />
-
-        <div className="container-site" style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '6rem 1.25rem' }}>
-          {/* Main heading */}
+          position: 'absolute', bottom: 0, left: 0,
+          zIndex: 2,
+          width: '45%',
+          padding: 'clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 5vw, 4rem)',
+        }}>
+          <p style={{
+            color: 'rgba(255,255,255,0.8)',
+            fontSize: '0.7rem', fontWeight: 700,
+            letterSpacing: '0.22em', textTransform: 'uppercase',
+            marginBottom: '0.75rem',
+          }}>Premium Garments</p>
           <h1 style={{
             fontFamily: "'Playfair Display', serif",
-            fontSize: 'clamp(2.75rem, 6vw, 5rem)',
+            fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
             fontWeight: 700,
-            lineHeight: 1.08,
             color: '#fff',
+            lineHeight: 1.1,
             letterSpacing: '-0.02em',
-            marginBottom: '1.75rem',
-            maxWidth: '860px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+            marginBottom: '1rem',
+            textShadow: '0 2px 16px rgba(0,0,0,0.4)',
           }}>
             Elevate Your Everyday{' '}
-            <span style={{ color: '#22C55E', display: 'inline-block' }}>Comfort</span>
+            <span style={{ color: '#4ADE80' }}>Comfort</span>
           </h1>
-
-          {/* Sub-text */}
           <p style={{
-            color: 'rgba(255,255,255,0.80)',
-            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+            color: 'rgba(255,255,255,0.82)',
+            fontSize: 'clamp(0.8rem, 1.1vw, 0.95rem)',
+            maxWidth: '380px',
+            marginBottom: '1.75rem',
             lineHeight: 1.7,
-            maxWidth: '600px',
-            margin: '0 auto 2.5rem',
+            textShadow: '0 1px 6px rgba(0,0,0,0.5)',
           }}>
             Premium nightwear &amp; casual wear meticulously crafted from the finest fabrics for an unparalleled relaxation experience.
           </p>
-
-          {/* CTA Buttons */}
-          <div style={{
-            display: 'flex', flexWrap: 'wrap', gap: '1rem',
-            justifyContent: 'center', alignItems: 'center',
-          }}>
-            <Link to="/products" className="btn-primary" style={{
-              background: '#fff',
-              color: 'var(--color-primary-green)',
-              padding: '1rem 2.25rem',
-              fontSize: '0.8125rem',
-              boxShadow: '0 12px 32px rgba(0,0,0,0.2)',
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <Link to="/products" style={{
+              display: 'inline-flex', alignItems: 'center',
+              padding: '0.75rem 1.5rem',
+              background: '#fff', color: '#166534',
+              fontWeight: 700, fontSize: '0.75rem',
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+              borderRadius: '10px', textDecoration: 'none',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
             }}>
-              Shop Collection
+              Shop Collection →
             </Link>
-            <Link to="/combos" className="btn-secondary" style={{
-              background: 'rgba(255,255,255,0.1)',
-              color: '#fff',
-              borderColor: 'rgba(255,255,255,0.35)',
-              padding: '1rem 2.25rem',
+            <Link to="/combos" style={{
+              display: 'inline-flex', alignItems: 'center',
+              padding: '0.75rem 1.5rem',
+              background: 'rgba(255,255,255,0.15)',
+              backdropFilter: 'blur(8px)',
+              color: '#fff', border: '1.5px solid rgba(255,255,255,0.5)',
+              fontWeight: 600, fontSize: '0.75rem',
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+              borderRadius: '10px', textDecoration: 'none',
             }}>
               View Combos
             </Link>
           </div>
-
         </div>
       </section>
 
@@ -123,37 +131,41 @@ export default function Home() {
                 to: '/products?category=Men',
                 label: "Men's",
                 sub: 'Premium Nightwear & Casuals',
-                bg: 'linear-gradient(135deg, #0F2A1A 0%, #166534 100%)',
+                img: '/mens_collection.jpeg',
+                overlay: 'linear-gradient(to top, rgba(22, 101, 52, 0.9) 0%, rgba(22, 101, 52, 0) 50%)',
               },
               {
                 to: '/products?category=Women',
                 label: "Women's",
                 sub: 'Elegant Sleepwear & Loungewear',
-                bg: 'linear-gradient(135deg, #1A0F2A 0%, #4C1D95 100%)',
+                img: '/womens_collection.jpeg',
+                overlay: 'linear-gradient(to top, rgba(76, 29, 149, 0.9) 0%, rgba(76, 29, 149, 0) 50%)',
               },
-            ].map(({ to, label, sub, bg }) => (
+            ].map(({ to, label, sub, img, overlay }) => (
               <Link key={to} to={to} style={{
                 position: 'relative', display: 'block',
                 height: '520px', borderRadius: '20px', overflow: 'hidden',
-                background: bg, textDecoration: 'none',
-              }}
-                className="category-card"
-              >
-                {/* Pattern overlay */}
+                textDecoration: 'none', isolation: 'isolate',
+              }}>
+                <img src={img} alt={label} style={{
+                  position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', zIndex: 0,
+                }} />
+                {/* Gradient overlay */}
                 <div style={{
                   position: 'absolute', inset: 0,
-                  backgroundImage: 'radial-gradient(circle at 30% 70%, rgba(255,255,255,0.05) 0%, transparent 60%)',
+                  background: overlay, zIndex: 1,
                 }} />
                 <div style={{
                   position: 'absolute', bottom: 0, left: 0, right: 0,
-                  padding: '2.5rem',
+                  padding: '2.5rem', zIndex: 2,
+                  isolation: 'isolate',
                 }}>
                   <h3 style={{
                     fontFamily: "'Playfair Display', serif",
                     fontSize: '2.25rem', fontWeight: 700,
                     color: '#fff', marginBottom: '0.5rem', lineHeight: 1.1,
                   }}>{label}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>{sub}</p>
+                  <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>{sub}</p>
                   <span style={{
                     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                     width: '48px', height: '48px', borderRadius: '50%',
