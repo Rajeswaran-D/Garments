@@ -743,18 +743,54 @@ a[href*="category=Women"]::after {
    HERO RESPONSIVENESS
    ============================================ */
 .hero-section {
-  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #0A3D1F; /* Solid background for mobile text area */
+}
+.hero-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+.hero-gradient {
+  display: none; /* Hide gradient on mobile since text is below */
 }
 .hero-text-container {
+  position: relative;
   width: 100%;
+  padding: 2rem 1.25rem;
+  z-index: 2;
 }
 
 @media (min-width: 768px) {
   .hero-section {
+    display: block;
     height: 90vh;
+    background: transparent;
+  }
+  .hero-image-wrapper {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .hero-gradient {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 35%, transparent 65%);
+    z-index: 1;
   }
   .hero-text-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 50%;
+    padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 5vw, 4rem);
+    background: transparent;
   }
 }
 

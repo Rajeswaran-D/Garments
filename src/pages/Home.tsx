@@ -21,34 +21,24 @@ export default function Home() {
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', background: '#fff' }}>
 
       {/* ─── HERO ──────────────────────────────────────────────────────── */}
-      <section className="hero-section" style={{
-        position: 'relative',
-        width: '100%',
-        overflow: 'hidden',
-      }}>
-        {/* Background image fills the section */}
-        <img
-          src="/hero_banner.jpg"
-          alt="Shona Garments Hero Banner"
-          style={{
-            position: 'absolute', inset: 0,
-            width: '100%', height: '100%',
-            objectFit: 'cover', objectPosition: 'center top',
-            zIndex: 0,
-          }}
-        />
-        {/* Gradient only at the bottom for text readability */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 35%, transparent 65%)',
-          zIndex: 1,
-        }} />
-        {/* Text pinned to bottom-left only */}
-        <div className="hero-text-container" style={{
-          position: 'absolute', bottom: 0, left: 0,
-          zIndex: 2,
-          padding: 'clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 5vw, 4rem)',
-        }}>
+      <section className="hero-section">
+        <div className="hero-image-wrapper">
+          <img
+            src="/hero_banner.jpg"
+            alt="Shona Garments Hero Banner"
+            style={{
+              position: 'absolute', inset: 0,
+              width: '100%', height: '100%',
+              objectFit: 'cover', objectPosition: 'center top',
+              zIndex: 0,
+            }}
+          />
+          {/* Gradient only shows on desktop to fade image into text */}
+          <div className="hero-gradient" />
+        </div>
+        
+        {/* Text section - below image on mobile, overlay on desktop */}
+        <div className="hero-text-container">
           <p style={{
             color: 'rgba(255,255,255,0.8)',
             fontSize: '0.7rem', fontWeight: 700,
