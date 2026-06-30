@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 import {
   LayoutDashboard, Package, Tag, Settings,
-  LogOut, ExternalLink, ChevronRight,
+  LogOut, ExternalLink, ChevronRight, Menu, X
 } from 'lucide-react';
 
 const navItems = [
@@ -12,14 +14,21 @@ const navItems = [
 ];
 
 export default function AdminLayout() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Close sidebar on route change on mobile
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [location.pathname]);
 
   const isActive = (to: string, exact = false) =>
     exact ? location.pathname === to : location.pathname.startsWith(to);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem('adminToken');
+    await supabase.auth.signOut();
     navigate('/admin/login');
   };
 
@@ -27,23 +36,23 @@ export default function AdminLayout() {
   const current = navItems.find(n => isActive(n.to, n.exact)) ?? navItems[0];
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', background: 'var(--color-bg-soft)' }}>
+    <div style={{ minHeight: '100dvh', display: 'flex', background: 'var(--color-bg-soft)' }}>
+
+      {/* Overlay for mobile sidebar */}
+      <div 
+        className={`admin-overlay ${isSidebarOpen ? 'open' : ''}`}
+        onClick={() => setIsSidebarOpen(false)}
+      />
 
       {/* ─── SIDEBAR ─── */}
-      <aside style={{
-        width: '240px',
-        background: 'linear-gradient(180deg, #0A3D1F 0%, #166534 100%)',
-        color: '#fff',
-        display: 'flex', flexDirection: 'column',
-        flexShrink: 0,
-        position: 'sticky', top: 0, height: '100vh',
-        overflowY: 'auto',
-      }}>
+      <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         {/* Brand */}
         <div style={{
           padding: '1.5rem 1.25rem 1.25rem',
           borderBottom: '1px solid rgba(255,255,255,0.1)',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center'
         }}>
+          <div>
           <p style={{
             fontSize: '0.6rem', fontWeight: 700,
             letterSpacing: '0.2em', textTransform: 'uppercase',
@@ -54,6 +63,14 @@ export default function AdminLayout() {
             fontSize: '1.0625rem', fontWeight: 700,
             color: '#fff', letterSpacing: '0.04em',
           }}>Shona Garments</h2>
+          </div>
+          <button 
+            className="hide-desktop"
+            onClick={() => setIsSidebarOpen(false)}
+            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', padding: '0.25rem' }}
+          >
+            <X size={20} />
+          </button>
         </div>
 
         {/* Nav */}
@@ -164,9 +181,16 @@ export default function AdminLayout() {
           display: 'flex', alignItems: 'center', gap: '0.75rem',
           position: 'sticky', top: 0, zIndex: 10,
         }}>
+          <button 
+            className="admin-menu-btn"
+            onClick={() => setIsSidebarOpen(true)}
+            aria-label="Open menu"
+          >
+            <Menu size={20} />
+          </button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8125rem', color: 'var(--color-text-secondary)' }}>
-            <span>Admin</span>
-            <ChevronRight size={13} />
+            <span className="hide-mobile">Admin</span>
+            <ChevronRight size={13} className="hide-mobile" />
             <span style={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>{current.label}</span>
           </div>
         </header>

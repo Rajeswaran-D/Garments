@@ -93,27 +93,6 @@ export default function AdminSettings() {
     }
   };
 
-  const Field = ({
-    label, id, type = 'text', value, onChange, hint, placeholder,
-  }: {
-    label: string; id: string; type?: string;
-    value: string; onChange: (v: string) => void;
-    hint?: string; placeholder?: string;
-  }) => (
-    <div>
-      <label htmlFor={id} className="form-label">{label}</label>
-      <input
-        id={id}
-        type={type}
-        className="form-input"
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder={placeholder}
-      />
-      {hint && <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.375rem', marginBottom: 0 }}>{hint}</p>}
-    </div>
-  );
-
   return (
     <div style={{ maxWidth: '760px' }}>
       {/* Toast */}
@@ -247,6 +226,29 @@ export default function AdminSettings() {
 
         </form>
       )}
+    </div>
+  );
+}
+
+function Field({
+  label, id, type = 'text', value, onChange, hint, placeholder,
+}: {
+  label: string; id: string; type?: string;
+  value: string; onChange: (v: string) => void;
+  hint?: string; placeholder?: string;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="form-label">{label}</label>
+      <input
+        id={id}
+        type={type}
+        className="form-input"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder={placeholder}
+      />
+      {hint && <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.375rem', marginBottom: 0 }}>{hint}</p>}
     </div>
   );
 }

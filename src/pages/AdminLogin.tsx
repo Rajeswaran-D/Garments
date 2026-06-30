@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Lock, Eye, EyeOff } from 'lucide-react';
@@ -11,13 +11,21 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        navigate('/admin', { replace: true });
+      }
+    });
+  }, [navigate]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: email.trim().toLowerCase(),
         password,
       });
       if (error) throw error;
@@ -34,10 +42,10 @@ export default function AdminLogin() {
 
   return (
     <div style={{
-      minHeight: '100vh',
+      minHeight: '100dvh',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       background: 'linear-gradient(135deg, #0A3D1F 0%, #166534 60%, #15803D 100%)',
-      padding: '1.5rem',
+      padding: '1rem',
       position: 'relative', overflow: 'hidden',
     }}>
       {/* Decorative circles */}
@@ -57,8 +65,9 @@ export default function AdminLogin() {
       <div className="animate-fade-up" style={{
         background: '#fff',
         borderRadius: '24px',
-        padding: '2.5rem',
+        padding: 'clamp(1.5rem, 5vw, 2.5rem)',
         width: '100%', maxWidth: '420px',
+        boxSizing: 'border-box',
         boxShadow: '0 32px 80px rgba(0,0,0,0.25)',
         position: 'relative',
       }}>
@@ -108,6 +117,8 @@ export default function AdminLogin() {
               type="email"
               required
               autoComplete="username"
+              autoCapitalize="none"
+              autoCorrect="off"
               value={email}
               onChange={e => setEmail(e.target.value)}
               className="form-input"

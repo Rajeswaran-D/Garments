@@ -800,3 +800,72 @@ a[href*="category=Women"]::after {
   }
 }
 
+/* ============================================
+   ADMIN LAYOUT RESPONSIVENESS
+   ============================================ */
+.admin-sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #0A3D1F 0%, #166534 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow-y: auto;
+  transition: transform var(--transition-base);
+}
+
+.admin-overlay {
+  display: none;
+}
+
+.admin-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.admin-menu-btn:hover {
+  background-color: var(--color-bg-soft);
+}
+
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    transform: translateX(-100%);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+  }
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  .admin-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+  }
+  .admin-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+    display: block;
+  }
+  .admin-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+
