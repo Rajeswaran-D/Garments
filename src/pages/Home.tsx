@@ -21,10 +21,9 @@ export default function Home() {
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', background: '#fff' }}>
 
       {/* ─── HERO ──────────────────────────────────────────────────────── */}
-      <section style={{
+      <section className="hero-section" style={{
         position: 'relative',
         width: '100%',
-        height: '90vh',
         overflow: 'hidden',
       }}>
         {/* Background image fills the section */}
@@ -45,10 +44,9 @@ export default function Home() {
           zIndex: 1,
         }} />
         {/* Text pinned to bottom-left only */}
-        <div style={{
+        <div className="hero-text-container" style={{
           position: 'absolute', bottom: 0, left: 0,
           zIndex: 2,
-          width: '45%',
           padding: 'clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 5vw, 4rem)',
         }}>
           <p style={{

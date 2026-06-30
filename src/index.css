@@ -738,3 +738,29 @@ a[href*="category=Women"]::after {
   content: none !important;
   opacity: 0 !important;
 }
+
+/* ============================================
+   HERO RESPONSIVENESS
+   ============================================ */
+.hero-section {
+  height: 60vh;
+}
+.hero-text-container {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    height: 90vh;
+  }
+  .hero-text-container {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-text-container {
+    width: 45%;
+  }
+}
+
