@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { MapPin, Mail, Phone, Clock } from 'lucide-react';
+import { MapPin, Mail, Phone, Clock, Zap, Globe, Calendar, Smartphone, MessageCircle } from 'lucide-react';
 
 
 export default function Contact() {
@@ -148,7 +148,7 @@ export default function Contact() {
                     className="btn-whatsapp"
                     style={{ width: '100%', marginTop: '2rem' }}
                   >
-                    💬 Chat on WhatsApp
+                    <MessageCircle size={18} /> Chat on WhatsApp
                   </a>
                 )}
               </div>
@@ -219,17 +219,19 @@ export default function Contact() {
                 {/* Quick Info Cards */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   {[
-                    { label: 'Response Time', value: '< 2 Hours', icon: '⚡' },
-                    { label: 'Languages', value: 'English, Tamil', icon: '🌐' },
-                    { label: 'Support Days', value: 'Mon – Sat', icon: '📅' },
-                    { label: 'Order Via', value: 'WhatsApp', icon: '📱' },
-                  ].map(({ label, value, icon }) => (
+                    { label: 'Response Time', value: '< 2 Hours', icon: Zap },
+                    { label: 'Languages', value: 'English, Tamil', icon: Globe },
+                    { label: 'Support Days', value: 'Mon – Sat', icon: Calendar },
+                    { label: 'Order Via', value: 'WhatsApp', icon: Smartphone },
+                  ].map(({ label, value, icon: Icon }) => (
                     <div key={label} style={{
                       background: '#fff', borderRadius: '14px',
                       padding: '1.25rem', border: '1px solid var(--color-border-light)',
                       textAlign: 'center',
                     }}>
-                      <span style={{ fontSize: '1.25rem', display: 'block', marginBottom: '0.5rem' }}>{icon}</span>
+                      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem', color: 'var(--color-primary-green)' }}>
+                        <Icon size={24} strokeWidth={1.5} />
+                      </div>
                       <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-secondary)', marginBottom: '0.25rem' }}>{label}</p>
                       <p style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 0 }}>{value}</p>
                     </div>

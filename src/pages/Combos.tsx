@@ -85,10 +85,12 @@ export default function Combos() {
             </div>
           ) : combos.length === 0 ? (
             <div className="state-empty">
-              <svg className="w-16 h-16 text-[var(--color-border-dark)] mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-              </svg>
-              <p className="text-lg font-medium text-[var(--color-text-primary)]">No combo offers available</p>
+              <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm border border-[var(--color-border-light)]">
+                <svg className="w-10 h-10 text-[var(--color-primary-green)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                </svg>
+              </div>
+              <p className="text-lg font-bold text-[var(--color-text-primary)]">No combo offers available</p>
               <p className="text-sm text-[var(--color-text-secondary)] mt-1">Please check back later.</p>
             </div>
           ) : (
