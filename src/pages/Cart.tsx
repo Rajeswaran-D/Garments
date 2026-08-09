@@ -13,9 +13,13 @@ export default function Cart() {
   const items = useCart((state) => state.items);
   const removeItem = useCart((state) => state.removeItem);
   const updateQty = useCart((state) => state.updateQty);
+  const clearCart = useCart((state) => state.clearCart);
   const totalPrice = useCart((state) => state.totalPrice());
   const totalCount = useCart((state) => state.totalCount());
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '', phone: '', email: '', address: '', city: '', state: '', pincode: ''
+  });
   const [settings, setSettings] = useState<Settings | null>(null);
 
   useEffect(() => {
@@ -24,20 +28,63 @@ export default function Cart() {
     });
   }, []);
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (items.length === 0 || isCheckingOut) return;
+    if (!formData.name || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.pincode) {
+      return alert('Please fill in all required fields (Email is optional).');
+    }
+
     const wa = settings?.whatsappNumber;
     if (!wa) return alert('WhatsApp not configured. Please contact the store.');
     const businessName = settings?.businessName || 'Shona Garments';
 
     setIsCheckingOut(true);
-    const lines = items.map(item =>
-      `• *${item.name}*${item.size ? ` (${item.size})` : ''} × ${item.quantity} — ₹${(item.price * item.quantity).toFixed(0)}`
-    ).join('\n');
+    
+    try {
+      const { data: orderData, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          customer_name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          pincode: formData.pincode,
+          total_amount: totalPrice,
+          status: 'PENDING'
+        })
+        .select()
+        .single();
+        
+      if (orderError) throw orderError;
+      const orderId = orderData.id;
 
-    const msg = `Hello ${businessName}! I'd like to place an order:\n\n${lines}\n\n*Total: ₹${totalPrice.toFixed(0)}*\n\nPlease confirm my order. Thank you!`;
-    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`, '_blank');
-    setTimeout(() => setIsCheckingOut(false), 3000);
+      const orderItems = items.map(item => ({
+        order_id: orderId,
+        product_id: item.id,
+        quantity: item.quantity,
+        size: item.size || null
+      }));
+      
+      const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
+      if (itemsError) throw itemsError;
+
+      const lines = items.map(item =>
+        `• *${item.name}*${item.size ? ` (${item.size})` : ''} × ${item.quantity} — ₹${(item.price * item.quantity).toFixed(0)}`
+      ).join('\n');
+
+      const msg = `Hello ${businessName}! I'd like to place an order (ID: #${orderId}):\n\n${lines}\n\n*Total: ₹${totalPrice.toFixed(0)}*\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}\nAddress: ${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}\n\nPlease confirm my order. Thank you!`;
+      
+      window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`, '_blank');
+      
+      clearCart();
+    } catch (err: any) {
+      console.error(err);
+      alert('Failed to place order: ' + err.message);
+    } finally {
+      setIsCheckingOut(false);
+    }
   };
 
   /* ── EMPTY STATE ── */
@@ -282,6 +329,21 @@ export default function Cart() {
                   </p>
                 </div>
 
+                <div style={{ borderTop: '1px solid var(--color-border-light)', paddingTop: '1.5rem', marginBottom: '1.75rem' }}>
+                  <h3 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '1rem' }}>Shipping Details</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <input type="text" placeholder="Full Name *" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={inputStyle} />
+                    <input type="tel" placeholder="Phone Number *" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={inputStyle} />
+                    <input type="email" placeholder="Email (Optional)" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={inputStyle} />
+                    <textarea placeholder="Complete Address *" value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} style={{ ...inputStyle, minHeight: '60px', resize: 'vertical' }} />
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                      <input type="text" placeholder="City *" value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} style={inputStyle} />
+                      <input type="text" placeholder="State *" value={formData.state} onChange={e => setFormData({ ...formData, state: e.target.value })} style={inputStyle} />
+                    </div>
+                    <input type="text" placeholder="Pincode *" value={formData.pincode} onChange={e => setFormData({ ...formData, pincode: e.target.value })} style={inputStyle} />
+                  </div>
+                </div>
+
                 <button
                   onClick={handleCheckout}
                   disabled={isCheckingOut || !settings?.whatsappNumber}
@@ -325,4 +387,12 @@ const qtyBtn: React.CSSProperties = {
   background: 'none', border: 'none', cursor: 'pointer',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   color: 'var(--color-text-secondary)', transition: 'background-color var(--transition-fast)',
+};
+
+const inputStyle: React.CSSProperties = {
+  width: '100%', padding: '0.75rem', borderRadius: '8px',
+  border: '1px solid var(--color-border-light)',
+  fontSize: '0.875rem', background: '#F9FAFB',
+  outline: 'none', transition: 'border-color var(--transition-fast)',
+  fontFamily: 'inherit', boxSizing: 'border-box'
 };

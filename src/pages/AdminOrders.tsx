@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Package, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Package, Calendar, ChevronLeft, ChevronRight, Eye, X } from 'lucide-react';
 
 const STATUS_COLORS: Record<string, { bg: string, text: string }> = {
   PENDING: { bg: '#FEF3C7', text: '#D97706' },
@@ -30,6 +30,7 @@ export default function AdminOrders() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const LIMIT = 15;
 
   const fetchOrders = async () => {
@@ -105,6 +106,7 @@ export default function AdminOrders() {
                 <th>Total</th>
                 <th>Date</th>
                 <th>Status</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -112,7 +114,7 @@ export default function AdminOrders() {
                 <SkeletonRows />
               ) : orders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '4rem 1rem', color: 'var(--color-text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '4rem 1rem', color: 'var(--color-text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>
                     No orders found.
                   </td>
                 </tr>
@@ -162,6 +164,19 @@ export default function AdminOrders() {
                         ))}
                       </select>
                     </td>
+                    <td style={{ textAlign: 'right' }}>
+                      <button 
+                        onClick={() => setSelectedOrder(o)}
+                        style={{
+                          background: 'var(--color-bg-soft)', border: '1px solid var(--color-border-light)', 
+                          borderRadius: '8px', padding: '0.4rem 0.6rem', cursor: 'pointer',
+                          display: 'inline-flex', alignItems: 'center', gap: '0.375rem', 
+                          fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-primary)',
+                        }}
+                      >
+                        <Eye size={14} /> Details
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
@@ -198,6 +213,106 @@ export default function AdminOrders() {
               cursor: page === totalPages ? 'not-allowed' : 'pointer',
             }}
           ><ChevronRight size={18} /></button>
+        </div>
+      )}
+
+      {/* Order Details Modal */}
+      {selectedOrder && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 100,
+          background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: '1rem',
+        }}>
+          <div className="animate-fade-up" style={{
+            background: '#fff', borderRadius: '24px',
+            width: '100%', maxWidth: '600px',
+            maxHeight: '90vh', overflowY: 'auto',
+            boxShadow: '0 24px 48px rgba(0,0,0,0.2)',
+          }}>
+            <div style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              padding: '1.5rem 2rem', borderBottom: '1px solid var(--color-border-light)',
+              position: 'sticky', top: 0, background: '#fff', zIndex: 10,
+            }}>
+              <div>
+                <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
+                  Order #{selectedOrder.id}
+                </h2>
+                <div style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem' }}>
+                  {new Date(selectedOrder.created_at).toLocaleString()}
+                </div>
+              </div>
+              <button onClick={() => setSelectedOrder(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem', borderRadius: '8px', color: 'var(--color-text-secondary)' }}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              
+              {/* Customer Details */}
+              <div>
+                <h3 style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
+                  Customer Details
+                </h3>
+                <div style={{ background: 'var(--color-bg-soft)', border: '1px solid var(--color-border-light)', borderRadius: '12px', padding: '1.25rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: '0.25rem' }}>Name</div>
+                    <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{selectedOrder.customer_name}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: '0.25rem' }}>Phone</div>
+                    <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{selectedOrder.phone}</div>
+                  </div>
+                  {selectedOrder.email && (
+                    <div style={{ gridColumn: 'span 2' }}>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: '0.25rem' }}>Email</div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{selectedOrder.email}</div>
+                    </div>
+                  )}
+                  {selectedOrder.address && (
+                    <div style={{ gridColumn: 'span 2' }}>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: '0.25rem' }}>Address</div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 500, lineHeight: 1.5 }}>
+                        {selectedOrder.address}
+                        {selectedOrder.city && <span>, {selectedOrder.city}</span>}
+                        {selectedOrder.state && <span>, {selectedOrder.state}</span>}
+                        {selectedOrder.pincode && <span> - {selectedOrder.pincode}</span>}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Order Items */}
+              <div>
+                <h3 style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
+                  Order Items
+                </h3>
+                <div style={{ background: 'var(--color-bg-soft)', border: '1px solid var(--color-border-light)', borderRadius: '12px', overflow: 'hidden' }}>
+                  {selectedOrder.order_items?.map((item: any, idx: number) => (
+                    <div key={item.id} style={{ 
+                      padding: '1rem 1.25rem', 
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      borderBottom: idx < selectedOrder.order_items.length - 1 ? '1px solid var(--color-border-light)' : 'none'
+                    }}>
+                      <div>
+                        <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{item.products?.name || 'Product'}</div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem' }}>
+                          Qty: {item.quantity} {item.size ? `• Size: ${item.size}` : ''}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div style={{ padding: '1rem 1.25rem', background: '#fff', borderTop: '1px solid var(--color-border-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontWeight: 600 }}>Total Amount</span>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-primary-green)' }}>₹{selectedOrder.total_amount?.toFixed(0)}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
       )}
     </div>
