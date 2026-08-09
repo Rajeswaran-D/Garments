@@ -27,8 +27,8 @@ export default function AdminDashboard() {
         
         orders.forEach((order: any) => {
           if (order.status === 'PENDING') pending++;
-          if (order.status === 'DELIVERED') completed++;
-          if (order.status === 'CONFIRMED' || order.status === 'DELIVERED') {
+          if (order.status === 'DELIVERED') {
+            completed++;
             revenue += (order.total_amount || 0);
           }
         });
@@ -94,7 +94,7 @@ export default function AdminDashboard() {
       to: '/admin/orders',
       color: '#DCFCE7',
       iconColor: '#16A34A',
-      trend: 'Confirmed & Delivered',
+      trend: 'Only Delivered Orders',
     },
     {
       label: 'Total Orders',
