@@ -99,7 +99,7 @@ export default function AdminProducts() {
       let imageUrl = editing?.product_images?.[0]?.image_url || null;
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
         const filePath = `product-images/${fileName}`;
         const { error: uploadError } = await supabase.storage
           .from('images')
@@ -120,7 +120,7 @@ export default function AdminProducts() {
         price: parseFloat(formData.price),
         stock: parseInt(formData.stock, 10),
         featured: formData.featured,
-        sizes: formData.sizes.join(',') || null,
+        sizes: formData.sizes.join(','),
       };
       
       let productId = editing?.id;
@@ -136,9 +136,10 @@ export default function AdminProducts() {
         const { data: insertedData, error: insertError } = await supabase
           .from('products')
           .insert([payload])
-          .select();
+          .select()
+          .single();
         if (insertError) throw insertError;
-        productId = insertedData[0].id;
+        productId = insertedData.id;
         showToast('Product added successfully.');
       }
       
