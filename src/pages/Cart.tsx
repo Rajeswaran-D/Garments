@@ -98,7 +98,7 @@ export default function Cart() {
       }}>
         <div style={{
           background: '#fff', borderRadius: '24px',
-          padding: '4rem 3rem', maxWidth: '440px', width: '100%',
+          padding: 'clamp(1.5rem, 5vw, 4rem) clamp(1rem, 4vw, 3rem)', maxWidth: '440px', width: '100%',
           border: '1px solid var(--color-border-light)',
           boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
         }}>
@@ -336,7 +336,7 @@ export default function Cart() {
                     <input type="tel" placeholder="Phone Number *" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={inputStyle} />
                     <input type="email" placeholder="Email (Optional)" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={inputStyle} />
                     <textarea placeholder="Complete Address *" value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} style={{ ...inputStyle, minHeight: '60px', resize: 'vertical' }} />
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.75rem' }}>
                       <input type="text" placeholder="City *" value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} style={inputStyle} />
                       <input type="text" placeholder="State *" value={formData.state} onChange={e => setFormData({ ...formData, state: e.target.value })} style={inputStyle} />
                     </div>
@@ -375,7 +375,11 @@ export default function Cart() {
         }
         @media (max-width: 600px) {
           .cart-header { display: none !important; }
-          .cart-item { grid-template-columns: 1fr !important; }
+          .cart-item { 
+            grid-template-columns: 1fr !important; 
+            gap: 0.75rem !important; 
+          }
+          .cart-item > span { text-align: left !important; }
         }
       `}</style>
     </div>

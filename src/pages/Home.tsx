@@ -132,7 +132,7 @@ export default function Home() {
             ].map(({ to, label, sub, img, overlay }) => (
               <Link key={to} to={to} style={{
                 position: 'relative', display: 'block',
-                height: '520px', borderRadius: '20px', overflow: 'hidden',
+                height: 'clamp(360px, 60vh, 520px)', borderRadius: '20px', overflow: 'hidden',
                 textDecoration: 'none', isolation: 'isolate',
               }}>
                 <img src={img} alt={label} style={{
@@ -219,7 +219,7 @@ export default function Home() {
           <div style={{
             background: 'linear-gradient(135deg, #0A3D1F 0%, #166534 60%, #15803D 100%)',
             borderRadius: '24px',
-            padding: 'clamp(3rem, 6vw, 5rem) clamp(2rem, 5vw, 4rem)',
+            padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 3rem)',
             position: 'relative', overflow: 'hidden',
             textAlign: 'center',
           }}>
@@ -308,7 +308,7 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
               {[
                 { icon: <Package size={20} strokeWidth={1.5} />, label: 'Flexible MOQ', value: 'Custom quantities tailored to your needs' },
                 { icon: <DollarSign size={20} strokeWidth={1.5} />, label: 'Wholesale Pricing', value: 'Competitive rates for retail partners' },

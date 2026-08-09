@@ -232,7 +232,7 @@ export default function AdminOrders() {
           }}>
             <div style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              padding: '1.5rem 2rem', borderBottom: '1px solid var(--color-border-light)',
+              padding: 'clamp(1rem, 4vw, 1.5rem) clamp(1rem, 5vw, 2rem)', borderBottom: '1px solid var(--color-border-light)',
               position: 'sticky', top: 0, background: '#fff', zIndex: 10,
             }}>
               <div>
@@ -248,14 +248,14 @@ export default function AdminOrders() {
               </button>
             </div>
 
-            <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div style={{ padding: 'clamp(1.25rem, 5vw, 2rem)', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               
               {/* Customer Details */}
               <div>
                 <h3 style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
                   Customer Details
                 </h3>
-                <div style={{ background: 'var(--color-bg-soft)', border: '1px solid var(--color-border-light)', borderRadius: '12px', padding: '1.25rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div style={{ background: 'var(--color-bg-soft)', border: '1px solid var(--color-border-light)', borderRadius: '12px', padding: '1.25rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
                   <div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: '0.25rem' }}>Name</div>
                     <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{selectedOrder.customer_name}</div>

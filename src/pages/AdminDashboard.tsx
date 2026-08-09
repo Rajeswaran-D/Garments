@@ -126,7 +126,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div style={{ padding: '2rem 2.5rem', maxWidth: '1100px' }}>
+    <div style={{ maxWidth: '1100px' }}>
       {/* Header */}
       <div style={{ marginBottom: '2.5rem' }}>
         <p className="label-overline" style={{ marginBottom: '0.5rem' }}>Overview</p>
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
       {/* Stat Cards */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
         gap: '1.25rem',
         marginBottom: '2.5rem',
       }}>
@@ -203,7 +203,7 @@ export default function AdminDashboard() {
         }}>Order Statistics</h2>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
           gap: '1.25rem',
         }}>
           {orderCards.map(({ label, value, icon: Icon, to, color, iconColor, trend }) => (

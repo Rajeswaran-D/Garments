@@ -113,7 +113,7 @@ export default function ProductDetails() {
         padding: '1rem 0',
       }}>
         <div className="container-site">
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
+          <nav style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.375rem', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
             <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
             <ChevronRight size={13} />
             <Link to="/products" style={{ color: 'inherit', textDecoration: 'none' }}>Products</Link>
@@ -130,9 +130,9 @@ export default function ProductDetails() {
         <div className="container-content">
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '4rem',
-            marginBottom: '5rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))',
+            gap: 'clamp(1.5rem, 4vw, 4rem)',
+            marginBottom: 'clamp(2.5rem, 5vw, 5rem)',
           }}>
 
             {/* LEFT: Image Gallery */}
