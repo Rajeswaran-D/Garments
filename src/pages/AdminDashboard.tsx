@@ -1,24 +1,46 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Package, Tag, Settings, TrendingUp, ShoppingBag, ExternalLink } from 'lucide-react';
+import { Package, Tag, Settings, TrendingUp, ShoppingBag, ExternalLink, IndianRupee, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({ products: 0, combos: 0, activeProducts: 0 });
+  const [stats, setStats] = useState({ 
+    products: 0, combos: 0, activeProducts: 0,
+    totalOrders: 0, pendingOrders: 0, completedOrders: 0, revenue: 0 
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
       supabase.from('products').select('id, status'),
       supabase.from('combos').select('id'),
+      supabase.from('orders').select('status, total_amount'),
     ])
-      .then(([p, c]) => {
+      .then(([p, c, o]) => {
         const products = p.data || [];
         const combos = c.data || [];
+        const orders = o.data || [];
+
+        let revenue = 0;
+        let pending = 0;
+        let completed = 0;
+        
+        orders.forEach((order: any) => {
+          if (order.status === 'PENDING') pending++;
+          if (order.status === 'DELIVERED') completed++;
+          if (order.status === 'CONFIRMED' || order.status === 'DELIVERED') {
+            revenue += (order.total_amount || 0);
+          }
+        });
+
         setStats({
           products: products.length,
           combos: combos.length,
           activeProducts: products.filter((x: any) => x.status === 'ACTIVE').length,
+          totalOrders: orders.length,
+          pendingOrders: pending,
+          completedOrders: completed,
+          revenue,
         });
       })
       .catch(() => {})
@@ -61,6 +83,45 @@ export default function AdminDashboard() {
       color: '#F1F5F9',
       iconColor: '#64748B',
       trend: 'Configure site',
+    },
+  ];
+
+  const orderCards = [
+    {
+      label: 'Total Revenue',
+      value: `₹${stats.revenue.toLocaleString('en-IN')}`,
+      icon: IndianRupee,
+      to: '/admin/orders',
+      color: '#DCFCE7',
+      iconColor: '#16A34A',
+      trend: 'Confirmed & Delivered',
+    },
+    {
+      label: 'Total Orders',
+      value: stats.totalOrders,
+      icon: ShoppingBag,
+      to: '/admin/orders',
+      color: '#DBEAFE',
+      iconColor: '#2563EB',
+      trend: 'All time orders',
+    },
+    {
+      label: 'Pending Orders',
+      value: stats.pendingOrders,
+      icon: Clock,
+      to: '/admin/orders',
+      color: '#FEF3C7',
+      iconColor: '#D97706',
+      trend: 'Needs action',
+    },
+    {
+      label: 'Completed',
+      value: stats.completedOrders,
+      icon: CheckCircle,
+      to: '/admin/orders',
+      color: '#F3F4F6',
+      iconColor: '#4B5563',
+      trend: 'Successfully delivered',
     },
   ];
 
@@ -132,6 +193,69 @@ export default function AdminDashboard() {
             <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: 0 }}>{trend}</p>
           </Link>
         ))}
+      </div>
+
+      <div style={{ marginBottom: '2.5rem' }}>
+        <h2 style={{
+          fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em',
+          textTransform: 'uppercase', color: 'var(--color-text-secondary)',
+          marginBottom: '1.25rem',
+        }}>Order Statistics</h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '1.25rem',
+        }}>
+          {orderCards.map(({ label, value, icon: Icon, to, color, iconColor, trend }) => (
+            <Link
+              key={label}
+              to={to}
+              style={{
+                background: '#fff',
+                border: '1px solid var(--color-border-light)',
+                borderRadius: '16px',
+                padding: '1.5rem',
+                textDecoration: 'none',
+                display: 'block',
+                transition: 'box-shadow var(--transition-base), transform var(--transition-base)',
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)';
+                (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.boxShadow = '';
+                (e.currentTarget as HTMLElement).style.transform = '';
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
+                <div style={{
+                  width: '2.75rem', height: '2.75rem',
+                  background: color, borderRadius: '12px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: iconColor,
+                }}>
+                  <Icon size={20} strokeWidth={2} />
+                </div>
+              </div>
+              {loading ? (
+                <div style={{ height: '2.5rem', background: 'var(--color-bg-soft)', borderRadius: '8px', marginBottom: '0.5rem', animation: 'pulse 2s infinite' }} />
+              ) : (
+                <p style={{
+                  fontFamily: value !== null ? "'Playfair Display', serif" : 'Inter, sans-serif',
+                  fontSize: value !== null ? '2.25rem' : '1rem',
+                  fontWeight: 700,
+                  color: 'var(--color-text-primary)',
+                  lineHeight: 1, marginBottom: '0.375rem',
+                }}>
+                  {value !== null ? value : '⚙️'}
+                </p>
+              )}
+              <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '0.2rem' }}>{label}</p>
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: 0 }}>{trend}</p>
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* Quick Actions */}
