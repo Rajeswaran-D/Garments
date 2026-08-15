@@ -153,9 +153,9 @@ export default function AdminProducts() {
 
       closeModal();
       fetchProducts();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert('Failed to save product.');
+      alert('Failed to save product: ' + err.message);
     } finally {
       setSaving(false);
     }
