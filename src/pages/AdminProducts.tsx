@@ -103,7 +103,7 @@ export default function AdminProducts() {
         const filePath = `${fileName}`;
         const { error: uploadError } = await supabase.storage
           .from('product-images')
-          .upload(filePath, imageFile);
+          .upload(filePath, imageFile, { contentType: imageFile.type });
         if (uploadError) throw uploadError;
         
         const { data: publicUrlData } = supabase.storage
@@ -379,7 +379,7 @@ export default function AdminProducts() {
                   }}>
                     <Upload size={18} style={{ color: 'var(--color-primary-green)' }} />
                     {imageFile ? <span style={{ color: 'var(--color-primary-green)', fontWeight: 600 }}>✓ {imageFile.name}</span> : <span>Upload new image...</span>}
-                    <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => setImageFile(e.target.files?.[0] || null)} />
+                    <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" style={{ display: 'none' }} onChange={e => setImageFile(e.target.files?.[0] || null)} />
                   </label>
                 </div>
               </div>

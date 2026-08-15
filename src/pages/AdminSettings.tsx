@@ -60,7 +60,7 @@ export default function AdminSettings() {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const filePath = `${fileName}`;
-        const { error: uploadError } = await supabase.storage.from('hero-banners').upload(filePath, imageFile);
+        const { error: uploadError } = await supabase.storage.from('hero-banners').upload(filePath, imageFile, { contentType: imageFile.type });
         if (uploadError) throw uploadError;
         const { data: publicUrlData } = supabase.storage.from('hero-banners').getPublicUrl(filePath);
         heroBanner = publicUrlData.publicUrl;
@@ -205,7 +205,7 @@ export default function AdminSettings() {
                 <span>Click to upload new banner image</span>
               )}
               <input
-                type="file" accept="image/*" style={{ display: 'none' }}
+                type="file" accept="image/png, image/jpeg, image/jpg, image/webp" style={{ display: 'none' }}
                 onChange={e => setImageFile(e.target.files?.[0] || null)}
               />
             </label>

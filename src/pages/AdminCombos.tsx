@@ -100,7 +100,7 @@ export default function AdminCombos() {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const filePath = `${fileName}`;
-        const { error: uploadError } = await supabase.storage.from('combo-banners').upload(filePath, imageFile);
+        const { error: uploadError } = await supabase.storage.from('combo-banners').upload(filePath, imageFile, { contentType: imageFile.type });
         if (uploadError) throw uploadError;
         const { data: publicUrlData } = supabase.storage.from('combo-banners').getPublicUrl(filePath);
         bannerImage = publicUrlData.publicUrl;
@@ -313,7 +313,7 @@ export default function AdminCombos() {
                 }}>
                   <Upload size={18} style={{ color: 'var(--color-primary-green)' }} />
                   {imageFile ? <span style={{ color: 'var(--color-primary-green)', fontWeight: 600 }}>✓ {imageFile.name}</span> : <span>Upload new image...</span>}
-                  <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => setImageFile(e.target.files?.[0] || null)} />
+                  <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" style={{ display: 'none' }} onChange={e => setImageFile(e.target.files?.[0] || null)} />
                 </label>
               </div>
 
