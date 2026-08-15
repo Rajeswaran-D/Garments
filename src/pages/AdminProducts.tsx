@@ -100,14 +100,14 @@ export default function AdminProducts() {
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const filePath = `product-images/${fileName}`;
+        const filePath = `${fileName}`;
         const { error: uploadError } = await supabase.storage
-          .from('images')
+          .from('product-images')
           .upload(filePath, imageFile);
         if (uploadError) throw uploadError;
         
         const { data: publicUrlData } = supabase.storage
-          .from('images')
+          .from('product-images')
           .getPublicUrl(filePath);
         imageUrl = publicUrlData.publicUrl;
       }

@@ -99,10 +99,10 @@ export default function AdminCombos() {
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `combo-images/${fileName}`;
-        const { error: uploadError } = await supabase.storage.from('images').upload(filePath, imageFile);
+        const filePath = `${fileName}`;
+        const { error: uploadError } = await supabase.storage.from('combo-banners').upload(filePath, imageFile);
         if (uploadError) throw uploadError;
-        const { data: publicUrlData } = supabase.storage.from('images').getPublicUrl(filePath);
+        const { data: publicUrlData } = supabase.storage.from('combo-banners').getPublicUrl(filePath);
         bannerImage = publicUrlData.publicUrl;
       }
       

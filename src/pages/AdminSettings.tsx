@@ -59,10 +59,10 @@ export default function AdminSettings() {
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `settings/${fileName}`;
-        const { error: uploadError } = await supabase.storage.from('images').upload(filePath, imageFile);
+        const filePath = `${fileName}`;
+        const { error: uploadError } = await supabase.storage.from('hero-banners').upload(filePath, imageFile);
         if (uploadError) throw uploadError;
-        const { data: publicUrlData } = supabase.storage.from('images').getPublicUrl(filePath);
+        const { data: publicUrlData } = supabase.storage.from('hero-banners').getPublicUrl(filePath);
         heroBanner = publicUrlData.publicUrl;
       }
 
