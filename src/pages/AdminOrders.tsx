@@ -139,7 +139,7 @@ export default function AdminOrders() {
                 orders.map((o: any) => (
                   <tr key={o.id}>
                     <td style={{ fontFamily: 'monospace', color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>
-                      #{o.id}
+                      #{o.id.toString().substring(0, 8).toUpperCase()}
                     </td>
                     <td>
                       <div style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '0.25rem' }}>{o.customer_name}</div>
@@ -267,7 +267,7 @@ export default function AdminOrders() {
             }}>
               <div>
                 <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
-                  Order #{selectedOrder.id}
+                  Order #{selectedOrder.id.toString().substring(0, 8).toUpperCase()}
                 </h2>
                 <div style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem' }}>
                   {new Date(selectedOrder.created_at).toLocaleString()}

@@ -59,6 +59,7 @@ export default function Cart() {
         
       if (orderError) throw orderError;
       const orderId = orderData.id;
+      const shortOrderId = orderId.toString().substring(0, 8).toUpperCase();
 
       const orderItems = items.map(item => ({
         order_id: orderId,
@@ -75,7 +76,7 @@ export default function Cart() {
         `• *${item.name}*${item.size ? ` (${item.size})` : ''} × ${item.quantity} — ₹${(item.price * item.quantity).toFixed(0)}`
       ).join('\n');
 
-      const msg = `Hello ${businessName}! I'd like to place an order (ID: #${orderId}):\n\n${lines}\n\n*Total: ₹${totalPrice.toFixed(0)}*\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}\nAddress: ${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}\n\nPlease confirm my order. Thank you!`;
+      const msg = `Hello ${businessName}! I'd like to place an order (ID: #${shortOrderId}):\n\n${lines}\n\n*Total: ₹${totalPrice.toFixed(0)}*\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}\nAddress: ${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}\n\nPlease confirm my order. Thank you!`;
       
       window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`, '_blank');
       
