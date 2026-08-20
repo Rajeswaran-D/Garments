@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Package, Calendar, ChevronLeft, ChevronRight, Eye, X } from 'lucide-react';
+import { Package, Calendar, ChevronLeft, ChevronRight, Eye, X, Trash2 } from 'lucide-react';
 
 const STATUS_COLORS: Record<string, { bg: string, text: string }> = {
   PENDING: { bg: '#FEF3C7', text: '#D97706' },
@@ -64,6 +64,23 @@ export default function AdminOrders() {
       fetchOrders();
     } catch {
       alert('Failed to update status.');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm('Are you sure you want to delete this order?')) return;
+    try {
+      // Delete order_items first to avoid foreign key constraints (if no cascade delete)
+      const { error: itemsError } = await supabase.from('order_items').delete().eq('order_id', id);
+      if (itemsError) throw itemsError;
+
+      const { error } = await supabase.from('orders').delete().eq('id', id);
+      if (error) throw error;
+      
+      fetchOrders();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete order.');
     }
   };
 
@@ -165,17 +182,30 @@ export default function AdminOrders() {
                       </select>
                     </td>
                     <td style={{ textAlign: 'right' }}>
-                      <button 
-                        onClick={() => setSelectedOrder(o)}
-                        style={{
-                          background: 'var(--color-bg-soft)', border: '1px solid var(--color-border-light)', 
-                          borderRadius: '8px', padding: '0.4rem 0.6rem', cursor: 'pointer',
-                          display: 'inline-flex', alignItems: 'center', gap: '0.375rem', 
-                          fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-primary)',
-                        }}
-                      >
-                        <Eye size={14} /> Details
-                      </button>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                        <button 
+                          onClick={() => setSelectedOrder(o)}
+                          style={{
+                            background: 'var(--color-bg-soft)', border: '1px solid var(--color-border-light)', 
+                            borderRadius: '8px', padding: '0.4rem 0.6rem', cursor: 'pointer',
+                            display: 'inline-flex', alignItems: 'center', gap: '0.375rem', 
+                            fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-primary)',
+                          }}
+                        >
+                          <Eye size={14} /> Details
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(o.id)}
+                          style={{
+                            background: '#FEE2E2', border: '1px solid #FECACA', 
+                            borderRadius: '8px', padding: '0.4rem 0.6rem', cursor: 'pointer',
+                            display: 'inline-flex', alignItems: 'center', gap: '0.375rem', 
+                            fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-danger)',
+                          }}
+                        >
+                          <Trash2 size={14} /> Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
