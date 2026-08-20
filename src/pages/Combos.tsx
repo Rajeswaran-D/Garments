@@ -94,71 +94,96 @@ export default function Combos() {
               <p className="text-sm text-[var(--color-text-secondary)] mt-1">Please check back later.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+              gap: '1.5rem',
+            }}>
               {combos.map((c: any) => {
                 const { original, final } = getComboPrice(c);
                 const products: any[] = c.combo_products?.map((cp: any) => cp.products) || [];
                 const hasPrice = original > 0;
 
                 return (
-                  <div key={c.id} className="product-card group bg-white">
+                  <Link
+                    key={c.id}
+                    to={`/combos/${c.id}`}
+                    className="product-card"
+                    style={{ textDecoration: 'none' }}
+                  >
                     {/* Banner */}
-                    <div className="relative overflow-hidden bg-[var(--color-bg-soft)] aspect-video rounded-t-2xl">
+                    <div className="product-card-image">
                       {c.banner_image ? (
                         <img
                           src={c.banner_image}
                           alt={c.name}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                           loading="lazy"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-[var(--color-text-muted)]">
-                          <span className="text-xs tracking-widest uppercase">No Image</span>
-                        </div>
+                        <div style={{
+                          width: '100%', height: '100%',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          background: 'var(--color-bg-soft)', fontSize: '2.5rem',
+                        }}>🏷️</div>
                       )}
-                      <div className="absolute top-4 right-4 bg-red-500 text-white font-bold text-sm px-3 py-1 rounded-full shadow-md">
-                        {c.discount_percentage}% OFF
+                      <div style={{ position: 'absolute', top: '0.875rem', left: '0.875rem' }}>
+                        <span className="badge-featured" style={{ background: 'var(--color-danger)', color: '#fff' }}>
+                          {c.discount_percentage}% OFF
+                        </span>
                       </div>
                     </div>
 
-                    <div className="product-card-body p-6">
-                      <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{c.name}</h3>
-                      <p className="text-[var(--color-text-secondary)] text-sm line-clamp-2 mb-4 leading-relaxed">{c.description}</p>
+                    <div className="product-card-body" style={{ padding: '1.125rem' }}>
+                      <p style={{
+                        fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em',
+                        textTransform: 'uppercase', color: 'var(--color-text-secondary)',
+                        marginBottom: '0.375rem',
+                      }}>COMBO DEAL</p>
+                      
+                      <h3 style={{
+                        fontFamily: "'Playfair Display', serif",
+                        fontSize: '1rem', fontWeight: 600,
+                        color: 'var(--color-text-primary)',
+                        lineHeight: 1.35, marginBottom: '0.5rem',
+                      }} className="line-clamp-2">{c.name}</h3>
 
-                      {/* Included Products Mini List */}
                       {products.length > 0 && (
-                        <div className="mb-6">
-                          <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Includes:</p>
-                          <ul className="text-sm text-[var(--color-text-secondary)] space-y-1">
-                            {products.slice(0, 3).map((p: any) => (
-                              <li key={p?.id} className="truncate">• {p?.name}</li>
-                            ))}
-                            {products.length > 3 && (
-                              <li className="text-[var(--color-text-muted)] italic">+{products.length - 3} more items</li>
-                            )}
-                          </ul>
-                        </div>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }} className="line-clamp-2">
+                          Includes: {products.map((p: any) => p?.name).join(', ')}
+                        </p>
                       )}
 
                       {/* Pricing */}
-                      <div className="mt-auto pt-4 border-t border-[var(--color-border-light)]">
+                      <div style={{
+                        marginTop: 'auto', paddingTop: '0.5rem',
+                        display: 'flex', alignItems: 'center', gap: '0.5rem'
+                      }}>
                         {hasPrice ? (
-                          <div className="flex items-end gap-3">
-                            <span className="text-2xl font-bold text-[var(--color-primary-green)]">₹{final.toFixed(0)}</span>
-                            <span className="text-sm font-medium text-[var(--color-text-muted)] line-through mb-1">₹{original.toFixed(0)}</span>
-                          </div>
+                          <>
+                            <span style={{ fontSize: '1.0625rem', fontWeight: 700, color: 'var(--color-primary-green)' }}>
+                              ₹{final.toFixed(0)}
+                            </span>
+                            <span style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', textDecoration: 'line-through' }}>
+                              ₹{original.toFixed(0)}
+                            </span>
+                          </>
                         ) : (
-                          <span className="text-lg font-bold text-[var(--color-primary-green)]">{c.discount_percentage}% Discount</span>
+                          <span style={{ fontSize: '1.0625rem', fontWeight: 700, color: 'var(--color-primary-green)' }}>
+                            {c.discount_percentage}% Discount
+                          </span>
                         )}
                       </div>
                     </div>
 
-                    <div className="product-card-footer px-6 pb-6 pt-0">
-                      <Link to={`/combos/${c.id}`} className="btn-secondary w-full text-center block py-3">
+                    <div className="product-card-footer" style={{ padding: '0 1.125rem 1.125rem' }}>
+                      <button
+                        className="btn-secondary"
+                        style={{ width: '100%', borderRadius: '10px', padding: '0.625rem', justifyContent: 'center' }}
+                      >
                         View Details
-                      </Link>
+                      </button>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
