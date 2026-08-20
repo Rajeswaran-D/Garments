@@ -64,7 +64,8 @@ export default function Cart() {
         order_id: orderId,
         product_id: item.id,
         quantity: item.quantity,
-        size: item.size || null
+        size: item.size || null,
+        price: item.price
       }));
       
       const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
